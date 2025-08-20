@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lancinet Keita - Generative AI Portfolio</title>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light background */
+            color: #1e293b; /* Dark text */
+        }
+
+        .dark-bg {
+            background-color: #1e293b; /* A dark blue inspired by the image */
+            color: #f8fafc; /* Light text for the dark background */
+        }
+
+        .text-gradient {
+            background-image: linear-gradient(90deg, #3b82f6, #60a5fa); /* Blue gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-card {
+            background-color: #ffffff; /* White card background */
+        }
+
+        .btn-gradient {
+            background-image: linear-gradient(135deg, #2563eb, #3b82f6); /* Darker to lighter blue gradient */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .module-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased leading-relaxed">
+
+    <!-- Top Navigation Bar -->
+    <nav class="sticky top-0 z-50 py-4 px-4 sm:px-6 lg:px-8 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <span class="text-2xl font-bold text-gray-800">Lancinet KEITA</span>
+            <div class="hidden sm:flex space-x-6 text-gray-600 font-medium">
+                <a href="#about" class="hover:text-blue-600 transition-colors">About Me</a>
+                <a href="#course" class="hover:text-blue-600 transition-colors">The Course</a>
+                <a href="#submissions" class="hover:text-blue-600 transition-colors">Submissions</a>
+                <!-- Add other links as needed -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header & Hero Section -->
+    <header class="dark-bg py-24 px-4 sm:px-6 lg:px-8 fade-in">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-16">
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 leading-tight">
+                    Hello, I'm <br>
+                    <span class="text-5xl sm:text-6xl lg:text-7xl">Lancinet KEITA</span>
+                </h1>
+                <p class="text-2xl sm:text-3xl font-light mb-6 text-gradient">
+                    Public Health Physician & Data Analyst
+                </p>
+                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                    <a href="https://www.linkedin.com/in/lancinet-keita-md-du-mph-cand-027a14ab/" target="_blank" class="inline-block bg-blue-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-600 transition-all">
+                        <span class="mr-2">🔗</span> LinkedIn
+                    </a>
+                    <a href="https://orcid.org/0009-0000-6505-8201" target="_blank" class="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition-all">
+                        <span class="mr-2">🔬</span> ORCID
+                    </a>
+                </div>
+            </div>
+            <div class="flex-shrink-0">
+                <img src="https://placehold.co/250x250/e2e8f0/4a5568?text=Your+Photo" alt="Lancinet Keita's profile photo" class="rounded-full w-40 h-40 sm:w-48 sm:h-48 shadow-lg border-4 border-white">
+            </div>
+        </div>
+    </header>
+
+    <main class="py-16 px-4 sm:px-6 lg:px-8">
+
+        <!-- About Me Section -->
+        <section id="about" class="mb-24 fade-in">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-6 text-center text-gray-800">About Me</h2>
+                <div class="bg-card p-8 rounded-2xl shadow-lg">
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        I am a public health physician with a strong background in planning, implementing, and evaluating health and nutrition programs. With a proven expertise in community health, adolescent health, and emergency health response, I have led large-scale public health surveys and contributed to significant research. My key skills include data analysis, project management, and effective inter-institutional collaboration. I am always seeking new ways to leverage technology, and my recent participation in the "Generative AI for Work & Research" course has equipped me with powerful no-code tools for task automation and data analysis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About the Course Section -->
+        <section id="course" class="mb-24 fade-in">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl font-bold mb-10 text-center text-gray-800">Generative AI for Work & Research</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Module 1 -->
+                    <div class="module-card p-6 rounded-2xl shadow-lg">
+                        <h4 class="font-bold text-xl mb-2 text-gray-800">Module 1</h4>
+                        <p class="text-gray-600">Websites, Documents & Presentations</p>
+                    </div>
+                    <!-- Module 2 -->
+                    <div class="module-card p-6 rounded-2xl shadow-lg">
+                        <h4 class="font-bold text-xl mb-2 text-gray-800">Module 2</h4>
+                        <p class="text-gray-600">AI-Automated Data Analysis</p>
+                    </div>
+                    <!-- Module 3 -->
+                    <div class="module-card p-6 rounded-2xl shadow-lg">
+                        <h4 class="font-bold text-xl mb-2 text-gray-800">Module 3</h4>
+                        <p class="text-gray-600">GenAI for Research & Text Analysis</p>
+                    </div>
+                    <!-- Module 4 -->
+                    <div class="module-card p-6 rounded-2xl shadow-lg">
+                        <h4 class="font-bold text-xl mb-2 text-gray-800">Module 4</h4>
+                        <p class="text-gray-600">Custom GPTs and Chatbots</p>
+                    </div>
+                    <!-- Module 5 -->
+                    <div class="module-card p-6 rounded-2xl shadow-lg">
+                        <h4 class="font-bold text-xl mb-2 text-gray-800">Module 5</h4>
+                        <p class="text-gray-600">AI for Task Automation</p>
+                    </div>
+                    <!-- Module 6 -->
+                    <div class="module-card p-6 rounded-2xl shadow-lg">
+                        <h4 class="font-bold text-xl mb-2 text-gray-800">Module 6</h4>
+                        <p class="text-gray-600">GenAI for Communication & Outreach</p>
+                    </div>
+                    <!-- Module 7 -->
+                    <div class="module-card p-6 rounded-2xl shadow-lg">
+                        <h4 class="font-bold text-xl mb-2 text-gray-800">Module 7</h4>
+                        <p class="text-gray-600">Capstone Project & Showcase</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weekly Submissions Section -->
+        <section id="submissions" class="fade-in">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-6 text-center text-gray-800">My Weekly Submissions</h2>
+                <div class="bg-card p-8 rounded-2xl shadow-lg">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Submission 1 -->
+                        <div class="p-6 rounded-lg bg-gray-100 shadow-sm">
+                            <p class="font-semibold text-gray-800">Week 1: Website & Document Generation</p>
+                            <p class="text-gray-600 text-sm mt-2">A project on generating structured documents and simple websites.</p>
+                            <a href="#" class="inline-block mt-4 text-sm font-bold btn-gradient py-2 px-4 rounded-full text-white">Placeholder Link</a>
+                        </div>
+                        <!-- Submission 2 -->
+                        <div class="p-6 rounded-lg bg-gray-100 shadow-sm">
+                            <p class="font-semibold text-gray-800">Week 2: Data Analysis Automation</p>
+                            <p class="text-gray-600 text-sm mt-2">An automated data analysis workflow using AI tools.</p>
+                            <a href="#" class="inline-block mt-4 text-sm font-bold btn-gradient py-2 px-4 rounded-full text-white">Placeholder Link</a>
+                        </div>
+                        <!-- Submission 3 -->
+                        <div class="p-6 rounded-lg bg-gray-100 shadow-sm">
+                            <p class="font-semibold text-gray-800">Week 3: Text & Research Analysis</p>
+                            <p class="text-gray-600 text-sm mt-2">A system for efficient literature reviews and text summarization.</p>
+                            <a href="#" class="inline-block mt-4 text-sm font-bold btn-gradient py-2 px-4 rounded-full text-white">Placeholder Link</a>
+                        </div>
+                        <!-- Submission 4 -->
+                        <div class="p-6 rounded-lg bg-gray-100 shadow-sm">
+                            <p class="font-semibold text-gray-800">Week 4: Custom GPTs & Chatbots</p>
+                            <p class="text-gray-600 text-sm mt-2">Development of a custom chatbot for knowledge management.</p>
+                            <a href="#" class="inline-block mt-4 text-sm font-bold btn-gradient py-2 px-4 rounded-full text-white">Placeholder Link</a>
+                        </div>
+                        <!-- Submission 5 -->
+                        <div class="p-6 rounded-lg bg-gray-100 shadow-sm">
+                            <p class="font-semibold text-gray-800">Week 5: AI for Task Automation</p>
+                            <p class="text-gray-600 text-sm mt-2">An automated workflow for repetitive tasks.</p>
+                            <a href="#" class="inline-block mt-4 text-sm font-bold btn-gradient py-2 px-4 rounded-full text-white">Placeholder Link</a>
+                        </div>
+                        <!-- Submission 6 -->
+                        <div class="p-6 rounded-lg bg-gray-100 shadow-sm">
+                            <p class="font-semibold text-gray-800">Week 6: Communication & Outreach</p>
+                            <p class="text-gray-600 text-sm mt-2">AI-generated content for research dissemination.</p>
+                            <a href="#" class="inline-block mt-4 text-sm font-bold btn-gradient py-2 px-4 rounded-full text-white">Placeholder Link</a>
+                        </div>
+                        <!-- Submission 7 - Capstone Project -->
+                        <div class="p-6 rounded-lg bg-gray-100 shadow-sm sm:col-span-2">
+                            <p class="font-semibold text-gray-800">Week 7: Capstone Project</p>
+                            <p class="text-gray-600 text-sm mt-2">The final project showcasing a comprehensive AI solution.</p>
+                            <a href="#" class="inline-block mt-4 text-sm font-bold btn-gradient py-2 px-4 rounded-full text-white">Placeholder Link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 text-gray-600 py-6 px-4 sm:px-6 lg:px-8 text-center mt-12">
+        <p>&copy; 2024 Lancinet Keita. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
