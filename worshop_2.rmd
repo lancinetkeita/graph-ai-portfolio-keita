@@ -1,0 +1,288 @@
+---
+title: "Fertility and Infant Mortality Analysis: 2015 Global Patterns"
+author: "Lancinet KEITA"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
+```
+
+## Introduction
+
+This report analyzes the relationship between fertility rates (children per woman) and infant mortality rates (deaths per 1000 births) across countries in 2015. We examine global patterns through world maps and explore the correlation between these two important demographic indicators.
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(maps)
+library(viridis)
+library(knitr)
+library(DT)
+```
+
+```{r load-data, include=FALSE}
+# Load the datasets
+fertility_data <- read.csv("children_per_woman_total_fertility.csv")
+mortality_data <- read.csv("infant_mortality_rate_per_1000_births.csv")
+
+# Display basic information about the datasets
+cat("Fertility dataset dimensions:", dim(fertility_data), "\n")
+cat("Mortality dataset dimensions:", dim(mortality_data), "\n")
+```
+
+```{r data-preview, include=FALSE}
+# Preview the first few rows of each dataset
+cat("Fertility Data Preview:\n")
+kable(head(fertility_data[, 1:10]), caption = "First 6 rows and 10 columns of fertility data")
+
+cat("\nMortality Data Preview:\n")
+kable(head(mortality_data[, 1:10]), caption = "First 6 rows and 10 columns of mortality data")
+```
+
+
+```{r subset-2015, include=FALSE}
+# Subset data to 2015
+fertility_2015 <- fertility_data %>%
+  select(country, X2015) %>%
+  rename(fertility_rate = X2015) %>%
+  filter(!is.na(fertility_rate))
+
+mortality_2015 <- mortality_data %>%
+  select(country, X2015) %>%
+  rename(mortality_rate = X2015) %>%
+  filter(!is.na(mortality_rate))
+
+# Display summary statistics
+cat("Countries with fertility data in 2015:", nrow(fertility_2015), "\n")
+cat("Countries with mortality data in 2015:", nrow(mortality_2015), "\n")
+
+# Show summary statistics
+cat("\nFertility Rate Summary (2015):\n")
+summary(fertility_2015$fertility_rate)
+
+cat("\nMortality Rate Summary (2015):\n")
+summary(mortality_2015$mortality_rate)
+```
+
+```{r merge-data, include=FALSE}
+# Merge the datasets for countries that have both indicators
+combined_2015 <- merge(fertility_2015, mortality_2015, by = "country", all = FALSE)
+
+cat("Countries with both fertility and mortality data in 2015:", nrow(combined_2015), "\n")
+
+# Display first few rows of combined data
+kable(head(combined_2015), caption = "Combined 2015 data for countries with both indicators")
+```
+
+## World Map Visualizations
+
+Let's create world maps to visualize the global distribution of both indicators in 2015.
+
+```{r world-map-fertility}
+# Prepare world map data
+world_map <- map_data("world")
+
+# Create a mapping function for country names (some may need adjustment)
+map_country_names <- function(country_name) {
+  case_when(
+    country_name == "United States" ~ "USA",
+    country_name == "United Kingdom" ~ "UK",
+    country_name == "South Korea" ~ "South Korea",
+    country_name == "North Korea" ~ "North Korea",
+    country_name == "Democratic Republic of Congo" ~ "Democratic Republic of the Congo",
+    country_name == "Republic of Congo" ~ "Republic of Congo",
+    country_name == "Central African Republic" ~ "Central African Republic",
+    country_name == "South Sudan" ~ "South Sudan",
+    country_name == "Ivory Coast" ~ "Ivory Coast",
+    country_name == "Cape Verde" ~ "Cape Verde",
+    country_name == "Sao Tome and Principe" ~ "Sao Tome and Principe",
+    country_name == "Equatorial Guinea" ~ "Equatorial Guinea",
+    country_name == "Guinea Bissau" ~ "Guinea-Bissau",
+    country_name == "Burkina Faso" ~ "Burkina Faso",
+    country_name == "Sierra Leone" ~ "Sierra Leone",
+    country_name == "Gambia" ~ "Gambia",
+    country_name == "Guinea" ~ "Guinea",
+    country_name == "Liberia" ~ "Liberia",
+    country_name == "Mali" ~ "Mali",
+    country_name == "Niger" ~ "Niger",
+    country_name == "Chad" ~ "Chad",
+    country_name == "Sudan" ~ "Sudan",
+    country_name == "Ethiopia" ~ "Ethiopia",
+    country_name == "Eritrea" ~ "Eritrea",
+    country_name == "Djibouti" ~ "Djibouti",
+    country_name == "Somalia" ~ "Somalia",
+    country_name == "Kenya" ~ "Kenya",
+    country_name == "Uganda" ~ "Uganda",
+    country_name == "Tanzania" ~ "Tanzania",
+    country_name == "Rwanda" ~ "Rwanda",
+    country_name == "Burundi" ~ "Burundi",
+    country_name == "Malawi" ~ "Malawi",
+    country_name == "Zambia" ~ "Zambia",
+    country_name == "Zimbabwe" ~ "Zimbabwe",
+    country_name == "Botswana" ~ "Botswana",
+    country_name == "Namibia" ~ "Namibia",
+    country_name == "South Africa" ~ "South Africa",
+    country_name == "Lesotho" ~ "Lesotho",
+    country_name == "Swaziland" ~ "Swaziland",
+    country_name == "Madagascar" ~ "Madagascar",
+    country_name == "Mauritius" ~ "Mauritius",
+    country_name == "Seychelles" ~ "Seychelles",
+    country_name == "Comoros" ~ "Comoros",
+    country_name == "Mayotte" ~ "Mayotte",
+    country_name == "Reunion" ~ "Reunion",
+    country_name == "Saint Helena" ~ "Saint Helena",
+    country_name == "Ascension Island" ~ "Ascension Island",
+    country_name == "Tristan da Cunha" ~ "Tristan da Cunha",
+    country_name == "Bouvet Island" ~ "Bouvet Island",
+    country_name == "Heard Island and McDonald Islands" ~ "Heard Island and McDonald Islands",
+    country_name == "French Southern Territories" ~ "French Southern Territories",
+    country_name == "Antarctica" ~ "Antarctica",
+    country_name == "South Georgia and the South Sandwich Islands" ~ "South Georgia and the South Sandwich Islands",
+    country_name == "Falkland Islands" ~ "Falkland Islands",
+    country_name == "British Antarctic Territory" ~ "British Antarctic Territory",
+    country_name == "Ross Dependency" ~ "Ross Dependency",
+    country_name == "Peter I Island" ~ "Peter I Island",
+    country_name == "Queen Maud Land" ~ "Queen Maud Land",
+    country_name == "Australian Antarctic Territory" ~ "Australian Antarctic Territory",
+    country_name == "Adelie Land" ~ "Adelie Land",
+    country_name == "Marie Byrd Land" ~ "Marie Byrd Land",
+    country_name == "Chilean Antarctic Territory" ~ "Chilean Antarctic Territory",
+    country_name == "Argentine Antarctica" ~ "Argentine Antarctica",
+    country_name == "Brazilian Antarctica" ~ "Brazilian Antarctica",
+    country_name == "Uruguayan Antarctica" ~ "Uruguayan Antarctica",
+    country_name == "Peruvian Antarctica" ~ "Peruvian Antarctica",
+    country_name == "Ecuadorian Antarctica" ~ "Ecuadorian Antarctica",
+    country_name == "Colombian Antarctica" ~ "Colombian Antarctica",
+    country_name == "Venezuelan Antarctica" ~ "Venezuelan Antarctica",
+    country_name == "Guyanese Antarctica" ~ "Guyanese Antarctica",
+    country_name == "Surinamese Antarctica" ~ "Surinamese Antarctica",
+    country_name == "French Guianese Antarctica" ~ "French Guianese Antarctica",
+    country_name == "Brazilian Antarctica" ~ "Brazilian Antarctica",
+    country_name == "Uruguayan Antarctica" ~ "Uruguayan Antarctica",
+    country_name == "Peruvian Antarctica" ~ "Peruvian Antarctica",
+    country_name == "Ecuadorian Antarctica" ~ "Ecuadorian Antarctica",
+    country_name == "Colombian Antarctica" ~ "Colombian Antarctica",
+    country_name == "Venezuelan Antarctica" ~ "Venezuelan Antarctica",
+    country_name == "Guyanese Antarctica" ~ "Guyanese Antarctica",
+    country_name == "Surinamese Antarctica" ~ "Surinamese Antarctica",
+    country_name == "French Guianese Antarctica" ~ "French Guianese Antarctica",
+    TRUE ~ country_name
+  )
+}
+
+# Prepare fertility data for mapping
+fertility_map_data <- fertility_2015 %>%
+  mutate(region = map_country_names(country)) %>%
+  select(region, fertility_rate)
+
+# Merge with world map data
+fertility_world <- world_map %>%
+  left_join(fertility_map_data, by = "region")
+
+# Create fertility world map
+fertility_map <- ggplot(fertility_world, aes(x = long, y = lat, group = group, fill = fertility_rate)) +
+  geom_polygon(color = "white", size = 0.1) +
+  scale_fill_viridis_c(name = "Children\nper Woman", 
+                       option = "plasma", 
+                       na.value = "grey90",
+                       trans = "sqrt") +
+  theme_void() +
+  labs(title = "Global Fertility Rates in 2015",
+       subtitle = "Children per Woman (Total Fertility Rate)",
+       caption = "Data source: Global demographic datasets") +
+  theme(plot.title = element_text(size = 16, hjust = 0.5),
+        plot.subtitle = element_text(size = 12, hjust = 0.5),
+        legend.position = "bottom")
+
+print(fertility_map)
+```
+
+```{r world-map-mortality}
+# Prepare mortality data for mapping
+mortality_map_data <- mortality_2015 %>%
+  mutate(region = map_country_names(country)) %>%
+  select(region, mortality_rate)
+
+# Merge with world map data
+mortality_world <- world_map %>%
+  left_join(mortality_map_data, by = "region")
+
+# Create mortality world map
+mortality_map <- ggplot(mortality_world, aes(x = long, y = lat, group = group, fill = mortality_rate)) +
+  geom_polygon(color = "white", size = 0.1) +
+  scale_fill_viridis_c(name = "Deaths per\n1000 Births", 
+                       option = "inferno", 
+                       na.value = "grey90",
+                       trans = "sqrt") +
+  theme_void() +
+  labs(title = "Global Infant Mortality Rates in 2015",
+       subtitle = "Deaths per 1000 Births",
+       caption = "Data source: Global demographic datasets") +
+  theme(plot.title = element_text(size = 16, hjust = 0.5),
+        plot.subtitle = element_text(size = 12, hjust = 0.5),
+        legend.position = "bottom")
+
+print(mortality_map)
+```
+
+## Relationship Analysis
+
+Now let's examine the relationship between fertility rates and infant mortality rates through a scatterplot and correlation analysis.
+
+```{r scatterplot-analysis}
+# Create scatterplot
+scatter_plot <- ggplot(combined_2015, aes(x = mortality_rate, y = fertility_rate)) +
+  geom_point(alpha = 0.7, size = 2, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "red", linetype = "dashed") +
+  labs(title = "Relationship Between Infant Mortality and Fertility Rates (2015)",
+       x = "Infant Mortality Rate (deaths per 1000 births)",
+       y = "Fertility Rate (children per woman)",
+       caption = "Each point represents a country. Red line shows linear trend.") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 14, hjust = 0.5),
+        axis.title = element_text(size = 12))
+
+print(scatter_plot)
+
+# Calculate correlation
+correlation <- cor(combined_2015$mortality_rate, combined_2015$fertility_rate, use = "complete.obs")
+cat("Correlation coefficient between infant mortality and fertility rates:", round(correlation, 3), "\n")
+```
+
+## Interpretation
+
+The analysis reveals several important patterns in the relationship between fertility rates and infant mortality rates in 2015:
+
+### Key Findings:
+
+1. **Strong Positive Correlation**: There is a strong positive correlation (r = `r round(correlation, 3)`) between infant mortality rates and fertility rates. This means that countries with higher infant mortality rates tend to have higher fertility rates.
+
+2. **Global Patterns**: 
+   - Countries in sub-Saharan Africa show both the highest fertility rates and highest infant mortality rates
+   - Developed countries in Europe, North America, and parts of Asia show both low fertility and low infant mortality
+   - This pattern suggests a demographic transition where improvements in child survival are associated with lower fertility
+
+3. **Demographic Transition Theory**: The relationship supports the demographic transition theory, which posits that as countries develop economically and improve healthcare, both infant mortality and fertility rates decline. Countries at different stages of this transition show varying combinations of these indicators.
+
+4. **Policy Implications**: The strong correlation suggests that efforts to reduce infant mortality through improved healthcare, nutrition, and sanitation may also contribute to fertility decline, which can have important implications for population growth and development planning.
+
+### Limitations:
+- The analysis is cross-sectional (2015 only) and doesn't capture temporal changes
+- Some countries may have missing data for either indicator
+- The relationship may be influenced by other factors not included in this analysis
+
+This analysis provides valuable insights into global demographic patterns and the interconnected nature of fertility and child survival indicators.
+
+## Reflection on My First Experience with Cursor
+
+The first challenge was figuring out how to find the right data to analyze with two relevant indicators. Another difficulty was that modifying the code directly in Cursor was almost impossible for me. However, I found Cursor very fast in generating code based on instructions, and surprisingly accurate in its responses. This was impressive to me, and I also discovered a new tool that will be very useful for my future work.
+
+
